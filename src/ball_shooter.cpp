@@ -24,7 +24,7 @@ void BallShooter::processInput(RCController *controller)
     int controlX = controller->getAxis(RCController::LEFT_X);
     int controlY = controller->getAxis(RCController::LEFT_Y);
 
-    Serial.println("In ball mode");
+    //Serial.println("In ball mode");
     if (controlY <= 500)
     {
         Serial.println("raising cyl");
@@ -52,7 +52,7 @@ void BallShooter::processInput(RCController *controller)
     }
     else
     {
-        Serial.println("none");
+        //Serial.println("none");
         // analogWrite(BALL_SHOOTER_LEFT_PIN, 128);
         // analogWrite(BALL_SHOOTER_RIGHT_PIN, 128);
         ballShooterMotor.write(SERVO_STOPPED);

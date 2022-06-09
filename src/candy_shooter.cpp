@@ -24,32 +24,29 @@ void CandyShooter::processInput(RCController *controller)
         return;
     }
 
-    Serial.println("In candy mode");
+    //Serial.println("In candy mode");
 
     int controlX = controller->getAxis(RadiolinkT8S::LEFT_X);
     int controlY = controller->getAxis(RadiolinkT8S::LEFT_Y);
 
-    if (controlY <= 500)
+    // if (controlY <= 500)
+    // {
+    //     Serial.println("Raising elevator");
+    //     candyLoaderMotor.write(90 + ELEVATOR_SPEED);
+    // }
+    if (controlY >= 1500)
     {
         Serial.println("Raising elevator");
-        candyLoaderMotor.write(90 + ELEVATOR_SPEED);
-        // analogWrite(CANDY_LOADER_MOTOR_PIN, 128 + ELEVATOR_SPEED);
-    }
-    else if (controlY >= 1500)
-    {
-        Serial.println("Lowering elevator");
         candyLoaderMotor.write(90 - ELEVATOR_SPEED);
-        // analogWrite(CANDY_LOADER_MOTOR_PIN, 128 - ELEVATOR_SPEED);
     }
     else
     {
-        Serial.println("Elevator not moving");
+        //Serial.println("Elevator not moving");
         candyLoaderMotor.write(90);
-        // analogWrite(CANDY_LOADER_MOTOR_PIN, 128);
     }
 
     int turretAngle = analogRead(TURRET_ENCODER_PIN);
-    Serial.println(turretAngle);
+    //Serial.println(turretAngle);
 
     // TODO: add limit switches
     if (controlX <= 500 && turretAngle > ENCODER_MIN)
@@ -64,7 +61,7 @@ void CandyShooter::processInput(RCController *controller)
     }
     else
     {
-        Serial.println("turret not moving");
+        //Serial.println("turret not moving");
         turretMotor.write(90);
     }
 

@@ -2,15 +2,16 @@
 #include "constants.h"
 #include <Arduino.h>
 
-SbusProcessor::SbusProcessor(HardwareSerial sbusPort, HardwareSerial dbgPort) : m_dbgPort(dbgPort), m_sbusPort(sbusPort)
+SbusProcessor::SbusProcessor(HardwareSerial *sbusPort, HardwareSerial *dbgPort) : m_dbgPort(dbgPort), m_sbusPort(sbusPort)
 {
     m_callbackHander = NULL;
     sBusPacketsLost = 0;
 
     // The SBUS is a non standard baud rate of 100 kbs
-    sbusPort.begin(100000, SERIAL_8E2);
+    sbusPort->begin(100000, SERIAL_8E2);
     // put your setup code here, to run once:
-    sbusPort.flush();
+    sbusPort->flush();
+    dbgPort->println("sbusPort setup");
 }
 
 /**************************************************************
@@ -24,9 +25,9 @@ bool SbusProcessor::processControllerData()
     bool packetReady = false;
 
     // Check the SBus serial port for incoming SBus data
-    if (m_sbusPort.available())
+    if (m_sbusPort->available())
     {
-        nextSBusByte = m_sbusPort.read();
+        nextSBusByte = m_sbusPort->read();
         // handle drive motors is called from inside processControllerData();
         // This is a new package and it's not the first byte then it's probably the start byte B11110000 (sent MSB)
         // so start reading the 25 byte packet
@@ -48,6 +49,7 @@ bool SbusProcessor::processControllerData()
 
             if (sBusBuffer[24] == 0x00)
             {
+                // m_dbgPort->println("Got packet");
                 processSBusBuffer();
                 packetReady = true;
             }
@@ -114,8 +116,8 @@ void SbusProcessor::processSBusBuffer()
     if ((sBusBuffer[23] >> 2) & 0x0001)
     {
         sBusPacketsLost++;
-        // Serial.print("Signal Lost: ");
-        // Serial.println(sBusPacketsLost);
+        Serial.print("Signal Lost: ");
+        Serial.println(sBusPacketsLost);
 
         // Make sure the robot doesn't move when the signal is lost
         /*radioLinkTurnValue = RADIOLINK_CONTROLLER_NEUTRAL_VALUE;
@@ -126,6 +128,7 @@ void SbusProcessor::processSBusBuffer()
     {
         receivedOneSBusPacketSinceReset = true;
         if (m_callbackHander != NULL) {
+            // m_dbgPort->println("calling handler");
             m_callbackHander(channels, m_callbackCtx);
         }
     }

@@ -79,8 +79,7 @@ RCController::TogglePosition RadiolinkT8S::getToggle(Toggle side)
 bool RadiolinkT8S::isButtonPressed(Button button)
 {
     bool pressed = false;
-    switch (button)
-    {
+    switch (button) {
     case BUTTON_1:
         pressed = radioLinkButton == RL_BUTTON_PRESSED;
         break;

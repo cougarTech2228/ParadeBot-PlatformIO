@@ -66,7 +66,7 @@ void ParadeBot::do_setup()
 
     Serial.println("ParadeBot::do_setup()");
 
-    m_sbusController = new SbusProcessor(Serial1, Serial);
+    m_sbusController = new SbusProcessor(&Serial1, &Serial);
     m_controller = new RadiolinkT8S(m_sbusController);
     m_ballShooter = new BallShooter();
     m_driveController = new DriveController();
@@ -100,7 +100,7 @@ void ParadeBot::do_setup()
     wdt_enable(WDTO_1S);
     digitalWrite(ENABLE_BOT_LED_PIN, 1);
 
-    Serial.println("Set up");
+    Serial.println("Set up done");
 }
 
 /**************************************************************
@@ -155,8 +155,10 @@ void ParadeBot::do_loop()
     // Serial.println("ParadeBot::do_loop()");
 
     // showLED();
-    // int currentChildModeButton = digitalRead(CHILD_MODE_BUTTON_PIN);
+    int currentChildModeButton = digitalRead(CHILD_MODE_BUTTON_PIN);
     // childModeEnabled = currentChildModeButton;
+    m_childModeEnabled = (currentChildModeButton == 0);
+    digitalWrite(CHILD_MODE_LED_PIN, m_childModeEnabled);
     /*
     if(currentChildModeButton != childModeRead){
       if(currentChildModeButton == 1 && childModeDebounceCount >= 100){
@@ -184,13 +186,22 @@ void ParadeBot::do_loop()
         switch (m_controller->getToggle(RCController::TOGGLE_RIGHT))
         {
         case RCController::TOGGLE_BOTTOM:
-            m_robotMode = RobotMode::BALL;
+            if (m_robotMode != RobotMode::BALL) {
+                Serial.println("Entering BALL Mode");
+                m_robotMode = RobotMode::BALL;
+            }
             break;
         case RCController::TOGGLE_MIDDLE:
-            m_robotMode = RobotMode::UNKNOWN;
+            if (m_robotMode != RobotMode::UNKNOWN) {
+                Serial.println("Entering UNKNOWN Mode");
+                m_robotMode = RobotMode::UNKNOWN;
+            }
             break;
         case RCController::TOGGLE_TOP:
-            m_robotMode = RobotMode::CANDY;
+            if (m_robotMode != RobotMode::CANDY) {
+                Serial.println("Entering CANDY Mode");
+                m_robotMode = RobotMode::CANDY;
+            }
             break;
         default:
             m_robotMode = RobotMode::UNKNOWN;

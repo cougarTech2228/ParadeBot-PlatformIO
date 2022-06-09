@@ -3,8 +3,8 @@
 #include "parade_bot.h"
 #include <Arduino.h>
 
-static int NON_CHILD_MAX_SPEED = 60;
-static int CHILD_MAX_SPEED = 25;
+static int NON_CHILD_MAX_SPEED = 45;
+static int CHILD_MAX_SPEED = 20;
 
 DriveController::DriveController()
 {

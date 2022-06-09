@@ -8,7 +8,7 @@ class SbusProcessor
 public:
 	typedef void (*callback_t)(const int channels[18], void *ctx);
 
-    SbusProcessor(HardwareSerial sbusPort, HardwareSerial dbgPort);
+    SbusProcessor(HardwareSerial *sbusPort, HardwareSerial *dbgPort);
     bool processControllerData();
     void registerHandler(callback_t callback, void *ctx);
 
@@ -22,7 +22,7 @@ private:
     void processSBusBuffer();
     bool receivedOneSBusPacketSinceReset;
 
-    HardwareSerial m_dbgPort;
-    HardwareSerial m_sbusPort;
+    HardwareSerial *m_dbgPort;
+    HardwareSerial *m_sbusPort;
 };
 #endif
