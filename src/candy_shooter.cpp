@@ -3,10 +3,10 @@
 #include "parade_bot.h"
 #include <Arduino.h>
 
-static const int TURRET_SPEED = 60;
-static const int ELEVATOR_SPEED = 50;
-static const int ENCODER_MIN = 280;
-static const int ENCODER_MAX = 930;
+static const int TURRET_SPEED = 35;
+static const int ELEVATOR_SPEED = 60;
+static const int ENCODER_MIN = 90;
+static const int ENCODER_MAX = 1023;
 
 CandyShooter::CandyShooter()
 {
