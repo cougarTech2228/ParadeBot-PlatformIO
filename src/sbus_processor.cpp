@@ -55,13 +55,15 @@ bool SbusProcessor::processControllerData()
             }
             else
             {
-                Serial.println("Error!");
+                //Serial.println("Error!");
                 sBusErrors++; //?????
             }
         }
     }
     return packetReady;
 }
+
+void(* resetFunc) (void) = 0;
 
 /**************************************************************
    processSBusBuffer()
@@ -123,6 +125,9 @@ void SbusProcessor::processSBusBuffer()
         /*radioLinkTurnValue = RADIOLINK_CONTROLLER_NEUTRAL_VALUE;
           radioLinkThrottleValue = RADIOLINK_CONTROLLER_NEUTRAL_VALUE;
           radioLinkStrafeValue = RADIOLINK_CONTROLLER_NEUTRAL_VALUE;*/
+        if (sBusPacketsLost > 10) {
+          resetFunc();
+        }
     }
     else // Everything is okay so process the current values
     {

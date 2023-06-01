@@ -7,8 +7,10 @@
 #include "ball_shooter.h"
 #include "drive_controller.h"
 #include "candy_shooter.h"
+#include "led_subsystem.h"
 #include "sbus_processor.h"
 #include "radiolink_t8s.h"
+#include <FastLED.h>
 
 // Timed loop variables
 unsigned long startTime = millis();
@@ -71,9 +73,10 @@ void ParadeBot::do_setup()
     m_ballShooter = new BallShooter();
     m_driveController = new DriveController();
     m_candyShooter = new CandyShooter();
+    m_ledSubsystem = new LedSubsystem(NUM_LEDS);
+    m_ledSubsystem->showLED();
 
     m_driveController->stopDriveMotors();
-    //  setupLEDs();
 
     // sets up interrupts for the child mode and enable buttons
     setupButtonInterrupts();
@@ -106,7 +109,7 @@ void ParadeBot::do_setup()
 /**************************************************************
    timedLoop()
  **************************************************************/
-void timedLoop()
+void ParadeBot::timedLoop()
 {
     unsigned long currTime = millis();
     if (currTime >= startTime + 10 * countIterations)
@@ -155,6 +158,8 @@ void ParadeBot::do_loop()
     // Serial.println("ParadeBot::do_loop()");
 
     // showLED();
+    
+
     int currentChildModeButton = digitalRead(CHILD_MODE_BUTTON_PIN);
     // childModeEnabled = currentChildModeButton;
     m_childModeEnabled = (currentChildModeButton == 0);
@@ -180,9 +185,11 @@ void ParadeBot::do_loop()
     }
     */
     timedLoop();
-    wdt_reset();
+    //Serial.println("kick");
+    //wdt_reset();
     if (m_sbusController->processControllerData())
     {
+        wdt_reset();
         switch (m_controller->getToggle(RCController::TOGGLE_RIGHT))
         {
         case RCController::TOGGLE_BOTTOM:
