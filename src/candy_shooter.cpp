@@ -49,6 +49,7 @@ void CandyShooter::processInput(RCController *controller)
     //Serial.println(turretAngle);
 
     // TODO: add limit switches
+
     if (controlX <= 500 && turretAngle > ENCODER_MIN)
     {
         Serial.println("turret turn left");
