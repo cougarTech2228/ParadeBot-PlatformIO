@@ -4,7 +4,7 @@
 #include <Arduino.h>
 
 static const int TURRET_SPEED = 35;
-static const int ELEVATOR_SPEED = 60;
+static const int ELEVATOR_SPEED = 30;
 static const int ENCODER_MIN = 90;
 static const int ENCODER_MAX = 1023;
 
