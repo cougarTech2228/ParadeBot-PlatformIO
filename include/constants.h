@@ -19,6 +19,10 @@ static const int BALL_CYLINDER_RELAY_PIN = 22;
 static const int CANDY_SHOOTER_RELAY_PIN = 23;
 
 static const int LED_DATA_PIN = 30;
+
+static const int TURRET_LIMIT_LEFT_PIN = 31;
+static const int TURRET_LIMIT_RIGHT_PIN = 32;
+
 static const int NUM_LEDS = 150;
 
 static const int TURRET_LIMIT_RIGHT = 25;

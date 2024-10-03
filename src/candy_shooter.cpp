@@ -11,6 +11,10 @@ static const int ENCODER_MAX = 1023;
 CandyShooter::CandyShooter()
 {
     pinMode(CANDY_SHOOTER_RELAY_PIN, OUTPUT);
+    pinMode(TURRET_LIMIT_LEFT_PIN, INPUT_PULLUP);
+    pinMode(TURRET_LIMIT_RIGHT_PIN, INPUT_PULLUP);
+
+
     turretMotor.attach(TURRET_MOTOR_PIN,
                        MIN_PWM_SIGNAL_WIDTH, MAX_PWM_SIGNAL_WIDTH);
     candyLoaderMotor.attach(CANDY_LOADER_MOTOR_PIN,
@@ -45,17 +49,21 @@ void CandyShooter::processInput(RCController *controller)
         candyLoaderMotor.write(90);
     }
 
-    int turretAngle = analogRead(TURRET_ENCODER_PIN);
-    //Serial.println(turretAngle);
+    int leftLimit = !digitalRead(TURRET_LIMIT_LEFT_PIN);
+    int rightLimit = !digitalRead(TURRET_LIMIT_RIGHT_PIN);
+    // Serial.print("Left limit is: ");
+    // Serial.print(leftLimit);
+    // Serial.print(" Right limit is: ");
+    // Serial.println(rightLimit);
 
     // TODO: add limit switches
 
-    if (controlX <= 500 && turretAngle > ENCODER_MIN)
+    if (controlX <= 500 && !leftLimit)
     {
         Serial.println("turret turn left");
         turretMotor.write(90 + TURRET_SPEED);
     }
-    else if (controlX >= 1500 && turretAngle < ENCODER_MAX)
+    else if (controlX >= 1500 && !rightLimit)
     {
         Serial.println("turret turn right");
         turretMotor.write(90 - TURRET_SPEED);
