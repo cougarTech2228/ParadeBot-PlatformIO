@@ -41,7 +41,7 @@ void CandyShooter::processInput(RCController *controller)
     if (controlY >= 1500)
     {
         Serial.println("Raising elevator");
-        candyLoaderMotor.write(90 - ELEVATOR_SPEED);
+        candyLoaderMotor.write(90 + ELEVATOR_SPEED);
     }
     else
     {
