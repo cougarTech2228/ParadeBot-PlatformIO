@@ -23,6 +23,7 @@ static const int LED_DATA_PIN = 30;
 static const int TURRET_LIMIT_LEFT_PIN = 31;
 static const int TURRET_LIMIT_RIGHT_PIN = 32;
 
+static const int BOT_ID_0_PIN = 34;
 static const int NUM_LEDS = 150;
 
 static const int TURRET_LIMIT_RIGHT = 25;

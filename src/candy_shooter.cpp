@@ -7,6 +7,8 @@ static const int TURRET_SPEED = 35;
 static const int ELEVATOR_SPEED = 30;
 static const int ENCODER_MIN = 90;
 static const int ENCODER_MAX = 1023;
+static const unsigned long CHILD_MODE_FIRE_LIMIT_MS = 5000;
+
 
 CandyShooter::CandyShooter()
 {
@@ -19,6 +21,8 @@ CandyShooter::CandyShooter()
                        MIN_PWM_SIGNAL_WIDTH, MAX_PWM_SIGNAL_WIDTH);
     candyLoaderMotor.attach(CANDY_LOADER_MOTOR_PIN,
                             MIN_PWM_SIGNAL_WIDTH, MAX_PWM_SIGNAL_WIDTH);
+
+    buttonPressTime = 0;
 }
 
 void CandyShooter::processInput(RCController *controller)
@@ -33,15 +37,14 @@ void CandyShooter::processInput(RCController *controller)
     int controlX = controller->getAxis(RadiolinkT8S::LEFT_X);
     int controlY = controller->getAxis(RadiolinkT8S::LEFT_Y);
 
-    // if (controlY <= 500)
-    // {
-    //     Serial.println("Raising elevator");
-    //     candyLoaderMotor.write(90 + ELEVATOR_SPEED);
-    // }
     if (controlY >= 1500)
     {
         Serial.println("Raising elevator");
         candyLoaderMotor.write(90 + ELEVATOR_SPEED);
+    }
+    else if (controlY <= 500) {
+        Serial.println("Raising elevator");
+        candyLoaderMotor.write(90 - ELEVATOR_SPEED);
     }
     else
     {
@@ -78,9 +81,21 @@ void CandyShooter::processInput(RCController *controller)
     {
         Serial.println("shooting");
         digitalWrite(CANDY_SHOOTER_RELAY_PIN, 1);
+        if (!buttonPressState){
+            buttonPressState = true;
+            buttonPressTime = millis();
+        }
     }
     else
     {
-        digitalWrite(CANDY_SHOOTER_RELAY_PIN, 0);
+        if (ParadeBot::childModeEnabled()) {
+            if ((millis() - buttonPressTime) > CHILD_MODE_FIRE_LIMIT_MS) {
+                digitalWrite(CANDY_SHOOTER_RELAY_PIN, 0);
+                buttonPressState = false;
+            }
+        } else {
+            digitalWrite(CANDY_SHOOTER_RELAY_PIN, 0);
+            buttonPressState = false;
+        }
     }
 }

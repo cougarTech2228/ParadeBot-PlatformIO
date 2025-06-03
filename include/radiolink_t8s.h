@@ -16,10 +16,16 @@ private:
     SbusProcessor *m_sbusController;
 
     /* Radio link channels */
-    static const int RIGHT_STICK_X = 1;
-    static const int LEFT_STICK_Y = 3;
-    static const int RIGHT_STICK_Y = 2;
-    static const int LEFT_STICK_X = 4;
+    static const int RIGHT_STICK_X_OLD = 1;
+    static const int LEFT_STICK_Y_OLD = 2;
+    static const int RIGHT_STICK_Y_OLD = 3;
+    static const int LEFT_STICK_X_OLD = 4;
+
+    static const int RIGHT_STICK_X_NEW = 1;
+    static const int LEFT_STICK_Y_NEW = 3;
+    static const int RIGHT_STICK_Y_NEW = 2;
+    static const int LEFT_STICK_X_NEW = 4;
+
     static const int RIGHT_TOGGLE = 5;
     static const int BUTTON = 6;
     static const int LEFT_TOGGLE = 7;

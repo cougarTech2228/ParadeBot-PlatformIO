@@ -19,12 +19,14 @@ public:
     static RobotMode getRobotMode() { return m_robotMode; }
     static bool childModeEnabled() { return m_childModeEnabled; }
     static void childModeButtonPressed();
+    static bool isOldBot() { return m_botId; }
 
 private:
     void timedLoop();
 
     static RobotMode m_robotMode;
     static bool m_childModeEnabled;
+    static int m_botId;
     SbusProcessor *m_sbusController;
     BallShooter *m_ballShooter;
     DriveController *m_driveController;

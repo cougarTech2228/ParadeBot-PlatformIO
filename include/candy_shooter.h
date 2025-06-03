@@ -14,6 +14,8 @@ public:
 private:
     Servo turretMotor;
     Servo candyLoaderMotor;
+    unsigned long buttonPressTime;
+    bool buttonPressState;
 };
 
 #endif

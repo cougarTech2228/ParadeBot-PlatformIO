@@ -24,6 +24,7 @@ int countIterations = 0;
 
 RobotMode ParadeBot::m_robotMode;
 bool ParadeBot::m_childModeEnabled;
+int ParadeBot::m_botId;
 
 /**************************************************************
    childModeButtonPressed()
@@ -86,8 +87,14 @@ void ParadeBot::do_setup()
     pinMode(ENABLE_BOT_LED_PIN, OUTPUT);
     pinMode(ENABLE_BOT_BUTTON_PIN, INPUT_PULLUP);
 
+    pinMode(BOT_ID_0_PIN, INPUT_PULLUP);
+
+
+    m_botId = digitalRead(BOT_ID_0_PIN);
     digitalWrite(CHILD_MODE_LED_PIN, 0);
     digitalWrite(ENABLE_BOT_LED_PIN, 0);
+    Serial.print("Bot ID: ");
+    Serial.println(m_botId);
     Serial.println("Press enable to start");
     int ledStatus = 0;
     int ledLastChanged = 0;

@@ -1,4 +1,5 @@
 #include "radiolink_t8s.h"
+#include "parade_bot.h"
 
 void RadiolinkT8S::sbusCallback(const int channels[18], void *this_pointer)
 {
@@ -13,10 +14,17 @@ RadiolinkT8S::RadiolinkT8S(SbusProcessor *sbusController) : m_sbusController(sbu
 
 void RadiolinkT8S::onSbusPacket(const int channels[18])
 {
-    radioLinkRightX = channels[RIGHT_STICK_X];
-    radioLinkRightY = channels[RIGHT_STICK_Y];
-    radioLinkLeftX = channels[LEFT_STICK_X];
-    radioLinkLeftY = channels[LEFT_STICK_Y];
+    if (ParadeBot::isOldBot()) {
+        radioLinkRightX = channels[RIGHT_STICK_X_OLD];
+        radioLinkRightY = channels[RIGHT_STICK_Y_OLD];
+        radioLinkLeftX = channels[LEFT_STICK_X_OLD];
+        radioLinkLeftY = channels[LEFT_STICK_Y_OLD];
+    } else {
+        radioLinkRightX = channels[RIGHT_STICK_X_NEW];
+        radioLinkRightY = channels[RIGHT_STICK_Y_NEW];
+        radioLinkLeftX = channels[LEFT_STICK_X_NEW];
+        radioLinkLeftY = channels[LEFT_STICK_Y_NEW];
+    }
     radioLinkToggleRight = channels[RIGHT_TOGGLE];
     radioLinkToggleLeft = channels[LEFT_TOGGLE];
     radioLinkButton = channels[BUTTON];
