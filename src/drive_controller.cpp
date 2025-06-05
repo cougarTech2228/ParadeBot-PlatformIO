@@ -5,6 +5,10 @@
 
 static int NON_CHILD_MAX_SPEED = 55;
 static int CHILD_MAX_SPEED = 30;
+int right_last_iteration_speed;
+int left_last_iteration_speed;
+unsigned long ACCELERATION_FACTOR = 200;
+unsigned long ct;
 
 DriveController::DriveController()
 {
@@ -46,12 +50,33 @@ void DriveController::processInput(RCController *controller)
 
     int right = (tempRight + tempLeft) / 2;
     int left = (tempRight - tempLeft) / 2;
+    
 
+    if (ParadeBot::childModeEnabled() == false) {
+        if (millis()-ct > ACCELERATION_FACTOR) {
+            Serial.println("millis()-ct > ACCELERATION_FACTOR");
+            if (right < right_last_iteration_speed) {
+                Serial.println("right < right_last_iteration_speed, so we're increasing the wheel speed");
+                right = right_last_iteration_speed + 1;
+                ct = millis();
+
+            }
+            if (left > left_last_iteration_speed) {
+                Serial.println("left > left_last_iteration_speed, so we're increasing the wheel speed");
+                left = left_last_iteration_speed - 1;
+                ct = millis();
+
+            }
+            
+        }
+    }
     right = map(right, -100, 100, maxMotorSpeed, minMotorSpeed);
     left = map(left, -100, 100, minMotorSpeed, maxMotorSpeed);
-
+    right_last_iteration_speed = right;
+    left_last_iteration_speed = left;
     rightDriveMotor.write(right);
     leftDriveMotor.write(left);
+
 
     // Serial.print(right);
     // Serial.print(", ");
