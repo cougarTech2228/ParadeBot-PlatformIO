@@ -6,7 +6,7 @@ static const int CHILD_MODE_BUTTON_PIN = 26;
 static const int ENABLE_BOT_LED_PIN = 29;
 static const int CHILD_MODE_LED_PIN = 28;
 
-static const int RIGHT_DRIVE_MOTOR_PIN = 13;
+static const int RIGHT_DRIVE_MOTOR_PIN = 15;
 static const int LEFT_DRIVE_MOTOR_PIN = 14;
 
 static const int BALL_SHOOTER_LEFT_PIN = 7;
